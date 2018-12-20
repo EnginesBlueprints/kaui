@@ -16,7 +16,7 @@
         "patch": 0
       }
     },
-    "timestamp": "2018-12-20T13:03:41+11:00"
+    "timestamp": "2018-12-20T13:15:16+11:00"
   },
   "software": {
     "base": {
@@ -41,7 +41,7 @@
     ],
     "scripts": {
       "start": {
-        "content": "#!/bin/sh\r\n#need to add startup complete ..\r\n /opt/apache-tomcat-8.5.16/bin/startup.sh\r\n  while test -f /var/lib/tomcat/tomcat.pid\r\n   do\r\n    sleep 600\r\n    echo $! >/tmp/pid\r\n done\r\n    "
+        "content": "#!/bin/sh\r\n\r\n#need to add startup complete ..\r\n /opt/apache-tomcat-8.5.16/bin/startup.sh\r\n  while test -f /var/lib/tomcat/tomcat.pid\r\n   do\r\n    sleep 600\r\n    echo $! >/tmp/pid\r\n done\r\n    \r\n    sleep 600"
       }
     },
     "service_configurations": [
