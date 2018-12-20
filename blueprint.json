@@ -15,12 +15,82 @@
         "level": "alpha",
         "patch": 0
       }
-    }
+    },
+    "timestamp": "2018-12-20T13:03:41+11:00"
   },
   "software": {
     "base": {
+      "name": "kaui",
+      "framework": "docker",
+      "parent_image": "killbill/kaui:1.0.4",
+      "run_as_user": "root",
       "deployment_type": "web",
-      "http_protocol": "https_and_http"
-    }
+      "http_protocol": "https_and_http",
+      "framework_port_override": 8080,
+      "memory": {
+        "required": 768,
+        "recommended": 1024
+      }
+    },
+    "ports": [
+      {
+        "port": "8080",
+        "external": "9090",
+        "protocol": "tcp"
+      }
+    ],
+    "scripts": {
+      "start": {
+        "content": "#!/bin/sh\r\n#need to add startup complete ..\r\n /opt/apache-tomcat-8.5.16/bin/startup.sh\r\n  while test -f /var/lib/tomcat/tomcat.pid\r\n   do\r\n    sleep 600\r\n    echo $! >/tmp/pid\r\n done\r\n    "
+      }
+    },
+    "service_configurations": [
+      {
+        "publisher_namespace": "EnginesSystem",
+        "type_path": "database/sql/mysql",
+        "variables": {
+          "database_name": "_Engines_Builder(engine_name)",
+          "database_host": "_Engines_System(mysql_host)",
+          "db_username": "_Engines_Builder(engine_name)",
+          "db_password": "_Engines_System(random(10))",
+          "collation": "utf8_general_ci",
+          "full_access": "false"
+        }
+      }
+    ],
+    "environment_variables": [
+      {
+        "name": "KAUI_CONFIG_DAO_URL",
+        "value": "jdbc:mysql://mysql:3306/_Engines_Environment(dbname)",
+        "immutable": true,
+        "input": {
+          "type": "boolean"
+        }
+      },
+      {
+        "name": "KAUI_CONFIG_DAO_USER",
+        "value": "_Engines_Environment(dbuser)",
+        "immutable": true,
+        "input": {
+          "type": "boolean"
+        }
+      },
+      {
+        "name": "KAUI_CONFIG_DAO_PASSWORD",
+        "value": "_Engines_Environment(dbpasswd)",
+        "immutable": true,
+        "input": {
+          "type": "boolean"
+        }
+      },
+      {
+        "name": "KAUI_KILLBILL_URL",
+        "value": "http://killbill:8080",
+        "immutable": true,
+        "input": {
+          "type": "boolean"
+        }
+      }
+    ]
   }
 }
